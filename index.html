@@ -8,10 +8,10 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='8' fill='%2324292f'/><path fill='%23fff' transform='translate(1.5,1.5) scale(0.8125)' d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z'/></svg>">
 <meta name="apple-mobile-web-app-title" content="GitHub">
 <meta name="application-name" content="GitHub">
-<meta name="description" content="A lightweight open-source launcher for Genshin Impact.">
+<meta name="description" content="Craft Launcher — a next-generation Minecraft launcher. Fast, lightweight, mod-ready.">
 <meta property="og:title" content="GitHub">
 <meta property="og:site_name" content="GitHub">
-<meta property="og:description" content="A lightweight open-source launcher for Genshin Impact.">
+<meta property="og:description" content="Craft Launcher — a next-generation Minecraft launcher. Fast, lightweight, mod-ready.">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{height:100%;overflow:hidden;
@@ -19,10 +19,9 @@
     background:#fff;-webkit-font-smoothing:antialiased}
   :root{
     --border:#d0d7de; --fg:#24292f; --muted:#57606a; --link:#0969da;
-    --green:#2da44e; --green-dark:#1a7f37; --subtle:#f6f8fa; --canvas-inset:#f6f8fa;
+    --green:#2da44e; --green-dark:#1a7f37; --subtle:#f6f8fa;
   }
 
-  /* 顶部状态栏 */
   .status-bar{height:44px;display:flex;align-items:flex-end;justify-content:space-between;
     padding:0 24px 6px;font-size:14px;font-weight:600;color:#000;background:#fff}
   .status-bar .right{display:flex;align-items:center;gap:5px;font-size:12px}
@@ -30,7 +29,6 @@
   .battery:after{content:"";position:absolute;right:-3px;top:3px;width:2px;height:5px;background:#000;border-radius:1px}
   .battery i{display:block;height:100%;width:100%;background:#000;border-radius:1px}
 
-  /* 假浏览器地址栏 */
   .browser-bar{height:48px;display:flex;align-items:center;gap:8px;padding:0 12px;
     background:#f2f2f7;border-bottom:.5px solid #d1d1d6}
   .nav-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;
@@ -41,7 +39,6 @@
   .addr .lock{font-size:11px;color:#8e8e93}
   .addr .url{font-weight:500}
 
-  /* ===== GitHub 页面 ===== */
   .page{position:absolute;top:92px;left:0;right:0;bottom:34px;overflow-y:auto;
     -webkit-overflow-scrolling:touch;background:#fff;color:var(--fg)}
   .gh-header{display:flex;align-items:center;justify-content:space-between;
@@ -49,7 +46,7 @@
   .gh-header .left{display:flex;align-items:center;gap:12px;color:#24292f}
   .gh-header .octo{width:28px;height:28px}
   .gh-header .right{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:17px}
-  .avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#58a6ff,#3fb950)}
+  .avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#7ee787,#3fb950)}
 
   .repo{margin:16px;border:1px solid var(--border);border-radius:6px;padding:16px}
   .repo-title{display:flex;align-items:center;gap:6px;font-size:18px;font-weight:600;flex-wrap:wrap}
@@ -82,15 +79,23 @@
   .readme-body h1{font-size:22px;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
   .readme-body h2{font-size:17px;margin:18px 0 8px}
   .readme-body p{margin:8px 0;color:#24292f}
+  .readme-body ul{margin:8px 0 8px 20px}
+  .readme-body li{margin:4px 0}
   .readme-body code{background:#afb8c133;padding:2px 5px;border-radius:4px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em}
+  .badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .badge{font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600}
+  .badge.b1{background:#1f883d;color:#fff}
+  .badge.b2{background:#0969da;color:#fff}
+  .badge.b3{background:#8250df;color:#fff}
   .download-btn{
     display:flex;align-items:center;justify-content:center;gap:8px;
-    width:100%;margin-top:16px;padding:13px 16px;border:none;border-radius:6px;
+    width:100%;margin-top:16px;padding:14px 16px;border:none;border-radius:6px;
     background:var(--green);color:#fff;font-size:16px;font-weight:600;cursor:pointer;
     text-decoration:none;
   }
   .download-btn:active{background:var(--green-dark)}
   .download-btn.loading{opacity:.8;pointer-events:none}
+  .download-btn small{font-weight:500;opacity:.85;font-size:13px}
   .stars{margin-top:14px;display:flex;align-items:center;gap:14px;font-size:12px;color:var(--muted)}
 
   .home-bar{position:absolute;left:0;right:0;bottom:0;height:34px;
@@ -116,14 +121,13 @@
     <div class="nav-btn">‹</div>
     <div class="addr">
       <span class="lock">🔒</span>
-      <span class="url">github.com/genshin-impact/launcher</span>
+      <span class="url">github.com/CraftTeam/mc-launcher</span>
     </div>
     <div class="nav-btn">⟳</div>
   </div>
 
   <!-- GitHub 页面 -->
   <div class="page">
-    <!-- 顶栏 -->
     <div class="gh-header">
       <div class="left">
         <span style="font-size:20px">☰</span>
@@ -139,29 +143,29 @@
     <!-- 仓库信息 -->
     <div class="repo">
       <div class="repo-title">
-        <span class="owner">genshin-impact</span>
+        <span class="owner">CraftTeam</span>
         <span class="slash">/</span>
-        <span class="name">launcher</span>
+        <span class="name">mc-launcher</span>
         <span class="public-badge">Public</span>
       </div>
-      <div class="repo-desc">Lightweight open-source launcher for Genshin Impact. Fast startup, low memory, cross-platform support.</div>
+      <div class="repo-desc">🚀 Craft Launcher — 新一代 Minecraft 启动器，极速、轻量、开箱即用，支持 Fabric / Forge / NeoForge / Quilt 模组生态。</div>
       <div class="btn-row">
         <a class="btn primary">⌥ Code <span class="caret">▾</span></a>
         <a class="btn">⚑ Issues</a>
         <a class="btn">⤴ Pull requests</a>
-        <a class="btn">★ Star <span class="count">2.4k</span></a>
+        <a class="btn">★ Star <span class="count">3.1k</span></a>
       </div>
       <div class="stars">
-        <span>🍴 386 forks</span>
-        <span>👁 127 watching</span>
+        <span>🍴 512 forks</span>
+        <span>👁 204 watching</span>
       </div>
     </div>
 
     <!-- 页签 -->
     <div class="tabs">
       <div class="active">Code</div>
-      <div>Issues <span class="count-pill">12</span></div>
-      <div>Pull requests <span class="count-pill">3</span></div>
+      <div>Issues <span class="count-pill">8</span></div>
+      <div>Pull requests <span class="count-pill">2</span></div>
       <div>Releases</div>
     </div>
 
@@ -169,22 +173,37 @@
     <div class="readme">
       <div class="readme-head"><span>📄</span> README.md</div>
       <div class="readme-body">
-        <h1>Genshin Impact Launcher</h1>
-        <p>A lightweight, open-source launcher built with <code>Rust</code> + <code>Tauri</code>. Supports Windows, macOS and Linux.</p>
-        <h2>✨ Features</h2>
-        <p>· 3x faster startup than official client<br>
-           · Automatic game file integrity check<br>
-           · Multi-account switching<br>
-           · Zero telemetry, fully open source</p>
-        <h2>📦 Installation</h2>
-        <p>Download the latest release below, extract and run <code>./launcher</code>.</p>
+        <h1>🟩 Craft Launcher</h1>
+        <div class="badges">
+          <span class="badge b1">build passing</span>
+          <span class="badge b2">v1.0.0</span>
+          <span class="badge b3">MIT License</span>
+        </div>
+        <p>新一代 <b>Minecraft</b> 启动器，基于 <code>Rust</code> + <code>Tauri</code> 构建。极致的启动速度、干净的界面、原生的模组支持。</p>
+        <p>支持 Windows 10+ / macOS 11+ / Linux（AppImage / deb）。</p>
 
-        <!-- ↓↓↓ 点击这个按钮就跳转（地址在 onclick 里改） ↓↓↓ -->
+        <h2>✨ 特性</h2>
+        <ul>
+          <li>⚡ 启动速度比原版启动器快 3 倍，内存占用低于 100MB</li>
+          <li>📦 一键安装 Fabric / Forge / NeoForge / Quilt 模组加载器</li>
+          <li>🧩 内置模组市场，支持 CurseForge 与 Modrinth 源</li>
+          <li>🔑 微软账号正版登录，支持多账号切换</li>
+          <li>🎨 皮肤预览 / 披风管理 / 服务器延迟测速</li>
+          <li>🛡️ 完全开源，零遥测，本地配置不联网</li>
+        </ul>
+
+        <h2>📥 下载与安装</h2>
+        <p>下载最新版本，解压后直接运行 <code>CraftLauncher.exe</code> 即可，无需安装 Java（内置 JRE 21）。</p>
+
+        <!-- ↓↓↓ 点击这个按钮就跳转（目标在底部 JS 的 TARGET 里改） ↓↓↓ -->
         <button class="download-btn" id="dl">
-          ⬇ Download Latest Release (v3.2.1)
+          ⬇ Download Latest Release <small>v1.0.0 · 42.6 MB</small>
         </button>
 
-        <p style="margin-top:14px;color:#57606a;font-size:13px">License: MIT · Built with ❤️ by the community</p>
+        <h2>🔧 从源码构建</h2>
+        <p><code>cargo tauri build</code> — 需要 Rust 1.75+ 与 Node.js 18+。</p>
+
+        <p style="margin-top:14px;color:#57606a;font-size:13px">License: MIT · © 2026 CraftTeam · Not affiliated with Mojang or Microsoft</p>
       </div>
     </div>
   </div>
@@ -192,13 +211,13 @@
   <div class="home-bar"><i></i></div>
 
 <script>
-  // ====== 跳转目标：原神官网（想换别的就改这里） ======
+  // ====== 跳转目标：想换目标就改这里 ======
   const TARGET = "https://ys.mihoyo.com/";
 
   document.getElementById('dl').addEventListener('click', function(){
     this.classList.add('loading');
-    this.textContent = '⬇ Preparing download…';
-    setTimeout(() => { window.location.href = TARGET; }, 600);  // 假装在准备下载
+    this.innerHTML = '⬇ Preparing download… <small>connecting to release server</small>';
+    setTimeout(() => { window.location.href = TARGET; }, 600);
   });
 </script>
 </body>

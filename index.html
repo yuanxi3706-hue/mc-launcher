@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>GitHub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='8' fill='%2324292f'/><path fill='%23fff' transform='translate(1.5,1.5) scale(0.8125)' d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z'/></svg>">
+<meta name="apple-mobile-web-app-title" content="GitHub">
+<meta name="application-name" content="GitHub">
+<meta name="description" content="A lightweight open-source launcher for Genshin Impact.">
+<meta property="og:title" content="GitHub">
+<meta property="og:site_name" content="GitHub">
+<meta property="og:description" content="A lightweight open-source launcher for Genshin Impact.">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overflow:hidden;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Helvetica Neue",Arial,sans-serif;
+    background:#fff;-webkit-font-smoothing:antialiased}
+  :root{
+    --border:#d0d7de; --fg:#24292f; --muted:#57606a; --link:#0969da;
+    --green:#2da44e; --green-dark:#1a7f37; --subtle:#f6f8fa; --canvas-inset:#f6f8fa;
+  }
+
+  /* 顶部状态栏 */
+  .status-bar{height:44px;display:flex;align-items:flex-end;justify-content:space-between;
+    padding:0 24px 6px;font-size:14px;font-weight:600;color:#000;background:#fff}
+  .status-bar .right{display:flex;align-items:center;gap:5px;font-size:12px}
+  .battery{width:22px;height:11px;border:1px solid #000;border-radius:3px;position:relative;padding:1px}
+  .battery:after{content:"";position:absolute;right:-3px;top:3px;width:2px;height:5px;background:#000;border-radius:1px}
+  .battery i{display:block;height:100%;width:100%;background:#000;border-radius:1px}
+
+  /* 假浏览器地址栏 */
+  .browser-bar{height:48px;display:flex;align-items:center;gap:8px;padding:0 12px;
+    background:#f2f2f7;border-bottom:.5px solid #d1d1d6}
+  .nav-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+    color:#007aff;font-size:20px;line-height:1;flex:none}
+  .addr{flex:1;height:32px;display:flex;align-items:center;justify-content:center;gap:5px;
+    background:#fff;border-radius:9px;border:.5px solid #d1d1d6;
+    font-size:14px;color:#1c1c1e;overflow:hidden;white-space:nowrap}
+  .addr .lock{font-size:11px;color:#8e8e93}
+  .addr .url{font-weight:500}
+
+  /* ===== GitHub 页面 ===== */
+  .page{position:absolute;top:92px;left:0;right:0;bottom:34px;overflow-y:auto;
+    -webkit-overflow-scrolling:touch;background:#fff;color:var(--fg)}
+  .gh-header{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 16px;border-bottom:1px solid var(--border);background:#fff;position:sticky;top:0;z-index:5}
+  .gh-header .left{display:flex;align-items:center;gap:12px;color:#24292f}
+  .gh-header .octo{width:28px;height:28px}
+  .gh-header .right{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:17px}
+  .avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#58a6ff,#3fb950)}
+
+  .repo{margin:16px;border:1px solid var(--border);border-radius:6px;padding:16px}
+  .repo-title{display:flex;align-items:center;gap:6px;font-size:18px;font-weight:600;flex-wrap:wrap}
+  .repo-title .owner{font-weight:400;color:var(--link)}
+  .repo-title .slash{color:var(--muted);font-weight:400}
+  .repo-title .name{color:var(--link)}
+  .public-badge{border:1px solid var(--border);color:var(--muted);font-size:11px;
+    font-weight:500;padding:1px 7px;border-radius:20px;margin-left:2px}
+  .repo-desc{color:var(--muted);font-size:14px;margin-top:8px;line-height:1.5}
+
+  .btn-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);
+    border-radius:6px;padding:5px 12px;font-size:13px;font-weight:500;color:var(--fg);
+    background:var(--subtle);text-decoration:none}
+  .btn.primary{background:var(--green);border-color:rgba(27,31,36,.15);color:#fff}
+  .btn .count{background:rgba(255,255,255,.2);border-radius:10px;padding:0 6px;font-size:12px}
+  .btn-row .btn.primary .caret{font-size:10px;opacity:.9}
+
+  .tabs{display:flex;gap:18px;padding:0 16px;border-bottom:1px solid var(--border);
+    font-size:14px;color:var(--muted);position:sticky;top:49px;background:#fff;z-index:4}
+  .tabs div{padding:10px 2px}
+  .tabs .active{color:var(--fg);font-weight:600;border-bottom:2px solid #fd8c73}
+  .tabs .count-pill{background:#eaeef2;border-radius:10px;padding:0 6px;font-size:12px;margin-left:4px}
+
+  .readme{margin:16px;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+  .readme-head{display:flex;align-items:center;gap:8px;padding:8px 12px;
+    background:var(--subtle);border-bottom:1px solid var(--border);
+    font-size:13px;color:var(--muted)}
+  .readme-body{padding:20px 16px;font-size:15px;line-height:1.65;color:var(--fg)}
+  .readme-body h1{font-size:22px;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  .readme-body h2{font-size:17px;margin:18px 0 8px}
+  .readme-body p{margin:8px 0;color:#24292f}
+  .readme-body code{background:#afb8c133;padding:2px 5px;border-radius:4px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em}
+  .download-btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;margin-top:16px;padding:13px 16px;border:none;border-radius:6px;
+    background:var(--green);color:#fff;font-size:16px;font-weight:600;cursor:pointer;
+    text-decoration:none;
+  }
+  .download-btn:active{background:var(--green-dark)}
+  .download-btn.loading{opacity:.8;pointer-events:none}
+  .stars{margin-top:14px;display:flex;align-items:center;gap:14px;font-size:12px;color:var(--muted)}
+
+  .home-bar{position:absolute;left:0;right:0;bottom:0;height:34px;
+    display:flex;align-items:center;justify-content:center;background:#fff;border-top:1px solid var(--border)}
+  .home-bar i{display:block;width:134px;height:5px;border-radius:3px;background:#000}
+  body{-webkit-touch-callout:none;user-select:none}
+</style>
+</head>
+<body>
+
+  <!-- 假状态栏 -->
+  <div class="status-bar">
+    <span>9:41</span>
+    <span class="right">
+      <span>5G</span>
+      <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx=".8"/><rect x="5" y="5" width="3" height="6" rx=".8"/><rect x="10" y="2.5" width="3" height="8.5" rx=".8"/><rect x="15" y="0" width="3" height="11" rx=".8"/></svg>
+      <span class="battery"><i></i></span>
+    </span>
+  </div>
+
+  <!-- 假地址栏：想改仓库路径就改这里 -->
+  <div class="browser-bar">
+    <div class="nav-btn">‹</div>
+    <div class="addr">
+      <span class="lock">🔒</span>
+      <span class="url">github.com/genshin-impact/launcher</span>
+    </div>
+    <div class="nav-btn">⟳</div>
+  </div>
+
+  <!-- GitHub 页面 -->
+  <div class="page">
+    <!-- 顶栏 -->
+    <div class="gh-header">
+      <div class="left">
+        <span style="font-size:20px">☰</span>
+        <svg class="octo" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      </div>
+      <div class="right">
+        <span>🔔</span>
+        <span>＋</span>
+        <span class="avatar"></span>
+      </div>
+    </div>
+
+    <!-- 仓库信息 -->
+    <div class="repo">
+      <div class="repo-title">
+        <span class="owner">genshin-impact</span>
+        <span class="slash">/</span>
+        <span class="name">launcher</span>
+        <span class="public-badge">Public</span>
+      </div>
+      <div class="repo-desc">Lightweight open-source launcher for Genshin Impact. Fast startup, low memory, cross-platform support.</div>
+      <div class="btn-row">
+        <a class="btn primary">⌥ Code <span class="caret">▾</span></a>
+        <a class="btn">⚑ Issues</a>
+        <a class="btn">⤴ Pull requests</a>
+        <a class="btn">★ Star <span class="count">2.4k</span></a>
+      </div>
+      <div class="stars">
+        <span>🍴 386 forks</span>
+        <span>👁 127 watching</span>
+      </div>
+    </div>
+
+    <!-- 页签 -->
+    <div class="tabs">
+      <div class="active">Code</div>
+      <div>Issues <span class="count-pill">12</span></div>
+      <div>Pull requests <span class="count-pill">3</span></div>
+      <div>Releases</div>
+    </div>
+
+    <!-- README -->
+    <div class="readme">
+      <div class="readme-head"><span>📄</span> README.md</div>
+      <div class="readme-body">
+        <h1>Genshin Impact Launcher</h1>
+        <p>A lightweight, open-source launcher built with <code>Rust</code> + <code>Tauri</code>. Supports Windows, macOS and Linux.</p>
+        <h2>✨ Features</h2>
+        <p>· 3x faster startup than official client<br>
+           · Automatic game file integrity check<br>
+           · Multi-account switching<br>
+           · Zero telemetry, fully open source</p>
+        <h2>📦 Installation</h2>
+        <p>Download the latest release below, extract and run <code>./launcher</code>.</p>
+
+        <!-- ↓↓↓ 点击这个按钮就跳转（地址在 onclick 里改） ↓↓↓ -->
+        <button class="download-btn" id="dl">
+          ⬇ Download Latest Release (v3.2.1)
+        </button>
+
+        <p style="margin-top:14px;color:#57606a;font-size:13px">License: MIT · Built with ❤️ by the community</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-bar"><i></i></div>
+
+<script>
+  // ====== 跳转目标：原神官网（想换别的就改这里） ======
+  const TARGET = "https://ys.mihoyo.com/";
+
+  document.getElementById('dl').addEventListener('click', function(){
+    this.classList.add('loading');
+    this.textContent = '⬇ Preparing download…';
+    setTimeout(() => { window.location.href = TARGET; }, 600);  // 假装在准备下载
+  });
+</script>
+</body>
+</html>
